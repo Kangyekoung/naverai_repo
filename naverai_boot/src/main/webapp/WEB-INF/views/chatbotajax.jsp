@@ -27,6 +27,30 @@ $(document).ready(function(){
 							$("#response").append
 							('<a href=' + bubbles[b].data.url + '>' + bubbles[b].data.description + '</a><br>');
 						}
+						$.ajax({
+							url : '/chatbottts',
+							data : {'text' : bubbles[b].data.description},
+							type: 'get',
+							dataType : 'json',
+							success : function(server){
+								//alert(server.mp3);
+								// id tts audio 태그 재생
+								//1.id tts 태그 dom일자
+								var audio = $("#tts");
+								//2. 1번 src 속성 재성 mp3 지정
+								audio.atr("src", "/naverimages/" + server.mp3);
+								//3. 1번 play()
+								audio.play();
+							}
+							error : function(e){
+								alert(e);
+							}
+						});
+						
+						///////////////////////////////
+						// 피자주문
+						//////////////////////////////
+						
 					}
 					//이미지이거나 멀티링크
 					else if(bubbles[b].type=='template'){
@@ -64,7 +88,57 @@ $(document).ready(function(){
 <input type=button value="답변" name="event1">
 <input type=button value="웰컴메시지" name="event2">
 
+<button id="record">음성질문녹음시작</button>
+<button id="stop">음성질문녹음종료</button>
+<div id="sound"></div>
 <br>
 대화내용 : <div id="response" style="border:2px solid aqua"></div>
+음성답변  <audio id="tts" controls="controls"></audio>
+
+<script>
+//html 내용 붙여넣기
+</script>
+
 </body>
+<script>
+ var formData = new FormData();
+ 
+ formData.append("file1", blob ,"a.mp3");
+ $.ajax({
+	 url : "/mp3upload",
+	 data : formData,
+	 type : "post",
+	 processData : false,
+ 	contentType : false,
+ 	success : function(){
+ 		//a.mp3파일 서버
+ 		$.ajax({
+ 				url:"/chatbotstt",
+ 				data : {"mp3file" : "a.mp3"}
+ 				type: "get", 
+ 				dataType : 'json',
+ 				success : function(server){
+ 				 $("#request").val(server.text);
+ 				}
+ 		});
+ 		
+ 		
+ 		$.ajax({
+ 			url: "/pizzaorder",
+ 			data : {"kind":kind, "size":size, "price":totalPrice, "phone":phone},
+ 			type : "get",
+ 			dataType:"json",
+ 			success : function(server){
+ 				alert(server.insertrow);
+ 			}
+ 		});
+ 	},
+ 	error : function(e){
+ 		alert(e)
+ 	}
+ 
+ 	
+ });
+
+ </script>
 </html>

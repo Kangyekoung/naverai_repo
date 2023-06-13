@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+<button id="record">녹음시작</button>
+<button id="stop">녹음종료</button>
+<div id="sound"><audio src="녹음mp3"></audio></div>
+<script>
+let record = documnet.getElementById("record");
+let stop= document.getElementById("stop");
+let sound = document.getElementById("sound");
+
+
+if(navigator.mediaDevices){
+	console.log("지원가능");
+	let constraint = {"audio":true}
+}
+
+mediaRecorder.onstope = function(){
+	//audio 태그 추가하라
+	var audio = documnet.createElement("audio");
+	audio.setAttribue("controls", "");
+	audio.controls = trule;
+	sound.appendChild(audio);
+	
+	
+	var blob = new Blob(chunks, {"type":"audio/mp3"});
+	var mp3url = URL.createObjectURL(blob);
+	audio.src = mp3url;
+	
+	
+	chunks = [];
+	
+	
+	var a = document.createElement("a");
+	sound.appendChild(a);
+	a.href = mp3url;
+	a.innerHTML = "파일로 저장";
+	a.download = "";
+}
+
+</script>
+</body>
+</html>
