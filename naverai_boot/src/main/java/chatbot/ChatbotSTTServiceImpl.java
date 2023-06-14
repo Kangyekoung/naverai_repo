@@ -1,6 +1,10 @@
 package chatbot;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -8,18 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.example.ai.MyNaverInform;
 import com.example.ai.NaverService;
-
 @Service("chatbotsttservice")
 public class ChatbotSTTServiceImpl implements NaverService {
-	
-	@Override
 	public String test(String mp3file) {
 		return test(mp3file, "Kor");
 	}
-	
-	public String test(String mp3file, String lang) {
-		StringBuffer response = null;
-		String clientId = MyNaverInform.clientID;            // Application Client ID";
+		
+    public String test(String mp3file, String lang) {
+    	StringBuffer response = null;
+        String clientId = MyNaverInform.clientID;             // Application Client ID";
         String clientSecret = MyNaverInform.secret;     // Application Client Secret";
 
         try {
@@ -58,7 +59,7 @@ public class ChatbotSTTServiceImpl implements NaverService {
             String inputLine;
 
             if(br != null) {
-                response = new StringBuffer();
+               response = new StringBuffer();
                 while ((inputLine = br.readLine()) != null) {
                     response.append(inputLine);
                 }
@@ -70,7 +71,6 @@ public class ChatbotSTTServiceImpl implements NaverService {
         } catch (Exception e) {
             System.out.println(e);
         }
-		return response.toString();
-	}
-
+        return response.toString();
+    }
 }

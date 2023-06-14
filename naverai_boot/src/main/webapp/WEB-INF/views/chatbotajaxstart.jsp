@@ -8,31 +8,35 @@
 <script src="js/jquery-3.6.4.min.js"></script>
 <script>
 $(document).ready(function(){
-	//1 type buton 클릭하면 request 질문을 response 붙여넣는다
+	//1 type button 클릭하면 request 질문을 response 붙여넣는다
 	$("input:button").on("click", function(){
-		$("#response").append("질문 : " + $("#request").val() + "<br>");
-		//답변 받아오기 -ajax
-		$.ajax({
-			url:"/chatajaxprocess",
-			data:{"request": $("#request").val(), "event": $(this).val()},
+		$("#response").append("질문 : " + $("#request").val() +"<br>");
+		$.ajax(
+		{
+			url:"/chatbotajaxprocess",
+			data: {"request": $("#request").val() , "event" : $(this).val()},
 			type:'get',
-			dataType:'json',
+			dataType :'json',
 			success : function(server){
-				$("#response").append("답변 : " + server.bubbles[0].data.description + "<br>");
-				}, //success or error 둘 중에 한개 실행
-			error: function(e){alert(e);}
-		});//ajax end
-	});//on end
-});
+				$("#response").append("답변 : " + server.bubbles[0].data.description +"<br>"); 
+				},
+			error :function(e){alert(e);}
+		}
+		);//ajax end
+		
+		
+	});//on
+});//ready
 </script>
 </head>
 <body>
 
-질문 : <input type=text id="request">
-<input type=button value="답변" name="event1">
-<input type=button value="웰컴메시지" name="event2">
+질문 : <input type=text id="request" >
+<input type=button value="답변" id='event1' >
+<input type=button value="웰컴메시지" id='event2' >
 
 <br>
-대화내용 : <div id="response" style="border:2px solid aqua"></div>
+대화내용 : <div id="response" style="border:2px solid aqua"></div> 
+
 </body>
 </html>

@@ -13,7 +13,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-${ttsresult} 파일에 저장했습니다.
-<audio id="mp3" controls src="/naverimages/${ttsresult}"> </audio>
+${ttsresult } 파일에 저장했습니다.
+<audio id="mp3" controls src="/naverimages/${ttsresult }" ></audio>
 </body>
 </html>

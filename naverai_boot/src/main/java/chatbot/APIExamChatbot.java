@@ -2,15 +2,9 @@ package chatbot;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.security.Timestamp;
 import java.util.Base64;
 import java.util.Date;
 
@@ -22,27 +16,17 @@ import org.json.JSONObject;
 
 import com.example.ai.MyNaverInform;
 
-public class APIExamChatbot {
+public class APIExamChatbot{
 
 	public static void main(String args[]) {
-		//답변 =	main("질문", apiurl, secret);
-		//String result = main("", MyNaverInform.chatbot_apiURL, MyNaverInform.chatbotsecret); //웰컴메시지
+		//String result = main("", MyNaverInform.chatbot_apiURL, MyNaverInform.chatbot_sercet);//웰컴메시지
 		String result = main("오랜만이구나", MyNaverInform.chatbot_apiURL, MyNaverInform.chatbotsecret);
 		//기본답변, 이미지답변 json 분석
-		System.out.println("====챗봇 결과====");
+		System.out.println(" ===챗봇 결과=== ");
 		System.out.println(result);
-		/*
-		 * ##1686542951589 //요청시간
-			##{"bubbles":[{"data":{"description":"안녕"},"type":"text"}],"event":"send","version":"v2","userId":"U47b00b58c90f8e47428af8b7bddc1231heo2","timestamp":1686542951589}
-			OK
-			====챗봇 결과====
-			{"version":"v2","userId":"U47b00b58c90f8e47428af8b7bddc1231heo2","timestamp":1686542952167,"bubbles":[{"type":"text","data":{"description":"안녕하세요. 저는 클로버 챗봇입니다."},"information":[{"key":"chatType","value":"TEXT"},{"key":"chatType","value":"TEXT"},{"key":"score","value":"1.0"},{"key":"scenarioName","value":"인사"},{"key":"conversationTypes","value":"인사"},{"key":"endOfBubble","value":"endOfBubble"},{"key":"matchingType","value":"exactMatch"},{"key":"domainCode","value":"kdt-ai-chat-ft"}],"context":[]}],"scenario":{"name":"인사","chatUtteranceSetId":5415235,"intent":["인사"]},"entities":[],"keywords":[],"conversation":{"scenarioName":"인사","chatUtteranceSetId":5415235,"types":["인사"]},"normalizer":"null","event":"send"}
-
-		 * */
 	}
-
 	//질문을 챗봇에게 전달 - json 답변
-	public static String main(String voiceMessage, String apiURL, String secretKey) {
+  public static String main(String voiceMessage, String apiURL, String secretKey) {
 
 
         String chatbotMessage = "";
@@ -94,34 +78,32 @@ public class APIExamChatbot {
 
         return chatbotMessage;
     }
-
   //json 형태로 요청값 전달
-	public static String makeSignature(String message, String secretKey) {
+    public static String makeSignature(String message, String secretKey) {
 
-	    String encodeBase64String = "";
-	
-	    try {
-	        byte[] secrete_key_bytes = secretKey.getBytes("UTF-8");
-	
-	        SecretKeySpec signingKey = new SecretKeySpec(secrete_key_bytes, "HmacSHA256");
-	        Mac mac = Mac.getInstance("HmacSHA256");
-	        mac.init(signingKey);
-	
-	        byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
-	        encodeBase64String = Base64.getEncoder().encodeToString(rawHmac); //안드로이드 -> 자바api java.util 암호화
-	 
-	            return encodeBase64String;
-	
-	        } catch (Exception e){
-	            System.out.println(e);
-	        }
-	
-	        return encodeBase64String;
+        String encodeBase64String = "";
+
+        try {
+            byte[] secrete_key_bytes = secretKey.getBytes("UTF-8");
+
+            SecretKeySpec signingKey = new SecretKeySpec(secrete_key_bytes, "HmacSHA256");
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(signingKey);
+
+            byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
+            encodeBase64String = Base64.getEncoder().encodeToString(rawHmac);//안드로이드 -> java.util api 암호화
+
+            return encodeBase64String;
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
+        return encodeBase64String;
 
     }
-
-  //질문 시크릿키 암호화
-	public static String getReqMessage(String voiceMessage) {
+//질문 시크릿키 암호화
+    public static String getReqMessage(String voiceMessage) {
 
         String requestBody = "";
 
@@ -153,10 +135,8 @@ public class APIExamChatbot {
             bubbles_array.put(bubbles_obj);
 
             obj.put("bubbles", bubbles_array);
-            //send or open 중 하나 선택 (답변 or 웰컴메시지(질문무시))
-            obj.put("event", "send"); //질문이없으면 리턴메시지 없다.
-            //obj.put("event", "open"); //질문이 없어도 웰컴메시지 준다.
-            
+            obj.put("event", "send");//send / open  중 하나 선택 (답변 / 웰컴메시지(질문무시))
+
             requestBody = obj.toString();
 
         } catch (Exception e){
@@ -166,5 +146,9 @@ public class APIExamChatbot {
         return requestBody;
 
     }
-
 }
+
+
+
+
+

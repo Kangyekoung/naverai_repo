@@ -16,18 +16,17 @@ import com.example.ai.MyNaverInform;
 
 @Controller
 public class ChatbotController {
-	
 	@Autowired
 	@Qualifier("chatbotservice")
 	ChatbotServiceImpl service;
 	
 	@Autowired
 	@Qualifier("chatbotttsservice")
-	ChatbotTTSServiceImpl ttsservice; // 텍스트 -> mp3
+	ChatbotTTSServiceImpl ttsservice ;
 	
 	@Autowired
-	@Qualifier("chatbotsttsservice")
-	ChatbotSTTServiceImpl sttservice; //mp3 -> 텍스트
+	@Qualifier("chatbotsttservice")
+	ChatbotSTTServiceImpl sttservice;
 	
 	@Autowired
 	@Qualifier("pizzaservice")
@@ -40,15 +39,14 @@ public class ChatbotController {
 	}
 	
 	@RequestMapping("/chatbotresponse")
-	public ModelAndView chatbotresponse(String request, String event) {
+	public ModelAndView chatbotresponse(String request, String event){
 		String response = "";
-		if(event.equals("웰컴메시지")) {
-			response = ((ChatbotServiceImpl)service).test(request, "open");
+		if(event.equals("웰컴메시지") ){
+			response = service.test(request, "open");
 		}
 		else {
-			response = service.test(request);
+			response = service.test(request, "send");
 		}
-		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("response", response);
 		mv.setViewName("chatbotresponse");
@@ -57,7 +55,7 @@ public class ChatbotController {
 	
 	//기본답변만 분석한 뷰
 	@RequestMapping("/chatbotajaxstart")
-	public String chatbotts(String text) {
+	public String chatbotajaxstart() {
 		return "chatbotajaxstart";
 	}
 	
@@ -67,24 +65,24 @@ public class ChatbotController {
 		return "chatbotajax";
 	}
 	
-	@RequestMapping("/chatajaxprocess")
-	@ResponseBody
-	public String chatajaxprocess(String request, String event) {
+	@RequestMapping("/chatbotajaxprocess")
+	//@ResponseBody
+	public @ResponseBody String chatbotajaxprocess(String request, String event){
 		String response = "";
-		if(event.equals("웰컴메시지")) {
-			response = ((ChatbotServiceImpl)service).test(request, "open");
+		if(event.equals("웰컴메시지") ){
+			response = service.test(request, "open");
 		}
 		else {
-			response = service.test(request);
+			response = service.test(request, "send");
 		}
 		return response;
 	}
 	
 	@RequestMapping("/chatbottts")
 	@ResponseBody
-	public String chatbottts(String text) { //챗봇답변
-		String mp3 = ttsservice.test(text); //답변텟트를 -- 해당경로 저장 -- mp3파일이름 리턴
-		return "{\"mp3\" : \"" + mp3 + "\"}";
+	public String chatbottts(String text){//챗봇답변
+		String mp3 = ttsservice.test(text);//답변텍스트를 -- 해당경로 저장 -- mp3파일이름 리턴
+		return "{\"mp3\":\"" + mp3 +"\"}"   ;
 		//20230613시분초.mp3
 	}
 	
@@ -92,27 +90,37 @@ public class ChatbotController {
 	@PostMapping("/mp3upload")
 	@ResponseBody
 	public String mp3upload(MultipartFile file1) throws IOException{
-		String uploadFile = file1.getOriginalFilename(); //a.mp3
+		String uploadFile = file1.getOriginalFilename();//a.mp3
 		String uploadPath = MyNaverInform.path;
-		File saveFile = new File(uploadPath + uploadFile); //경로 
-		file1.transferTo(saveFile);  //client -> server 에 저장
-		return "{\"result\" : \"잘받았습니다.\"}";
+		File saveFile = new File(uploadPath + uploadFile);
+		file1.transferTo(saveFile);
+		return "{\"result\" :\"잘 받았습니다\"}";
 	}
 	
 	//업로드한 음성질문mp3파일을 텍스트변환
 	@RequestMapping("/chatbotstt")
 	@ResponseBody
 	public String chatbotstt(String mp3file) {
-		String text = sttservice.test(mp3file);
-		return  text; //json
+		String text = sttservice.test(mp3file);	
+		return text ;//json형태
 	}
 	
 	//피자주문을 db pizza 테이블에 저장
 	@RequestMapping("pizzaorder")
 	@ResponseBody
 	public String pizzaorder(PizzaDTO dto) {
-	 int insertrow = pizzaservice.insertPizza(dto);
-	 return "{\"insertrow\" : \"" +insertrow +"\"}";
+		int insertrow = pizzaservice.insertPizza(dto);
+		return "{\"insertrow\" : " + insertrow + "}";
 	}
-	
 }
+
+
+
+
+
+
+
+
+
+
+

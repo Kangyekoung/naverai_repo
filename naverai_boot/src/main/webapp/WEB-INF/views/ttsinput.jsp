@@ -14,34 +14,36 @@ $(document).ready(function(){
 </head>
 <body>
 <%
-	String speakers[] = 
-	{"mijin", "jinho", "clara", "matt", "shinji", "meimei", "liangliang", "jose",
-			"carmen", "nnaomi", "nhajun", "ndain"};
-	
-	String[] speakerinforms = {
-			"미진:한국어, 여성음색", "진호:함국어, 남성음색", 
-			"클라라 : 영어, 여성 음색", "매트 : 영어, 남성 음색",
-			"신지: 일본어, 남성 음색", "메이메이 : 중국어, 여성 음색",
-			"량량 : 중국어, 남성 음색", "호세 : 스페인어, 남성 음색",
-			"카르멘 : 스페인어, 여성 음색", 	"나오미 : 일본어, 여성 음색",
-			"하준 : 한국어, 아동 음색 (남)", "다인 : 한국어, 아동음색 (여)"
-			};
-%>
+String speakers[] = 
+{"mijin", "jinho", "clara", "matt", "shinji", "meimei", "liangliang", "jose",
+		"carmen", "nnaomi", "nhajun", "ndain"};
 
-<form action="ttsresult" method="get">
-	언어 선택 : <br>
-	<!-- //html에서 jsp변수를 쓸려면 -->  
+String[] speakerinforms = {
+		"미진:한국어, 여성음색", "진호:함국어, 남성음색", 
+		"클라라 : 영어, 여성 음색", "매트 : 영어, 남성 음색",
+		"신지: 일본어, 남성 음색", "메이메이 : 중국어, 여성 음색",
+		"량량 : 중국어, 남성 음색", "호세 : 스페인어, 남성 음색",
+		"카르멘 : 스페인어, 여성 음색", 	"나오미 : 일본어, 여성 음색",
+		"하준 : 한국어, 아동 음색 (남)", "다인 : 한국어, 아동음색 (여)"
+		};
+%>
+<form action="ttsresult" method=get>
+	음색 선택 : <br>
 	<%for(int i = 0; i < speakers.length; i++){%>
-		<input type=radio name="speaker" value=<%=speakers[i]%>> <%=speakers[i]%> : <%=speakerinforms[i] %> <br>
+		<input type=radio name="speaker" value=<%=speakers[i]%> > <%=speakerinforms[i]%><br>
 	<%}%>
-	mp3파일선택 : <br>
+	text파일선택 : <br>
 	<select name="text">
-		<!--model 전달 받아서 jstl 태그 써보자 -->
-		<c:forEach items="${filelist}" var="onefile" >
-			<option value="${onefile}"> ${onefile} </option>
-		</c:forEach>
+	<c:forEach items="${filelist }" var="onefile">
+		<option value="${onefile }">${onefile }</option>
+	</c:forEach>
 	</select>
 	<input type=submit value="mp3변환요청">
 </form>
+
+
 </body>
 </html>
+
+
+

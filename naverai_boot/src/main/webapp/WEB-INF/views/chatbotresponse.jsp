@@ -14,8 +14,8 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<h3>질문내용 : ${param.request} </h3>
-<h3 id="second"></h3> 1111
-<h3>답변내용 (모두) : ${response }</h3>
+<h3>질문내용 : ${param.request } </h3>
+<h3 id="second"></h3>
+<h3>답변내용 (모두): ${response }</h3>
 </body>
 </html>

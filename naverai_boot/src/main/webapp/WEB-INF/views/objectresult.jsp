@@ -35,29 +35,26 @@ $(document).ready(function(){
 		
 		var boxes = json.predictions[0].detection_boxes;//배열
 		for(var i = 0; i < boxes.length; i++){
-			/*
-			var x1 = json.predictions[0].detection_boxes[i][0] * faceimage.width;
+			/*var x1 = json.predictions[0].detection_boxes[i][0] * faceimage.width;
 		 	var y1 = json.predictions[0].detection_boxes[i][1] * faceimage.height;
 		 	var x2 = json.predictions[0].detection_boxes[i][2] * faceimage.width;
-		 	var y2 = json.predictions[0].detection_boxes[i][3] * faceimage.height;
-		 	*/
-		 	
-		 	var y1 = json.predictions[0].detection_boxes[i][0] * faceimage.height;
+		 	var y2 = json.predictions[0].detection_boxes[i][3] * faceimage.height;*/
+		 		
+			var y1 = json.predictions[0].detection_boxes[i][0] * faceimage.height;
 		 	var x1 = json.predictions[0].detection_boxes[i][1] * faceimage.width;
 		 	var y2 = json.predictions[0].detection_boxes[i][2] * faceimage.height;
 		 	var x2 = json.predictions[0].detection_boxes[i][3] * faceimage.width;
-		 
-		 	//let colors = ["red", "yellow", "orange"];
+		 	
+		 	//let colors = ["red","yellow","orange"];
 		 	//사각형
 		 	mycontext.strokeStyle="green";
-		 	mycontext.lineWidth=3;
-		 	mycontext.strokeRect(x1, y1, (x2-x1), (y2-y1));//사각형
+		 	mycontext.lineWidth =3;
+		 	mycontext.strokeRect(x1, y1, (x2-x1), (y2-y1) );
 		 	
 		 	//텍스트
 		 	mycontext.fillStyle="red";
 		 	mycontext.font = "bold 12px batang";
-		 	mycontext.fillText(json.predictions[0].detection_names[i],x2,y2);
-		 	
+		 	mycontext.fillText(json.predictions[0].detection_names[i] , x2,y2);
 		 	
 		 	
 		}//for

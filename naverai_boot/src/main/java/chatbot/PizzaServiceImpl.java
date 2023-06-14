@@ -10,5 +10,6 @@ public class PizzaServiceImpl {
 	
 	public int insertPizza(PizzaDTO dto) {
 		return mapper.insertPizza(dto);
-	}
+ 
+ }
 }

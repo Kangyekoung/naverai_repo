@@ -2,15 +2,9 @@ package chatbot;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.security.Timestamp;
 import java.util.Base64;
 import java.util.Date;
 
@@ -24,31 +18,27 @@ import org.springframework.stereotype.Service;
 import com.example.ai.MyNaverInform;
 import com.example.ai.NaverService;
 
-@Service("chatbotservice")
-//(질문, 답변) or ("", 웰컴메시지)
-public class ChatbotServiceImpl implements NaverService {
+//(질문, 답변) ("", 웰컴메시지)
 
-	@Override
+@Service("chatbotservice")
+public class ChatbotServiceImpl implements NaverService{
 	public String test(String request) {
-		return test(request, "send"); // 질문이 있는 경우
+		return test(request, "send");
 	}
 	
 	//질문을 챗봇에게 전달 - json 답변
-	
-	public String test(String request, String event)  {
-		//String result = main(request, MyNaverInform.chatbot_apiURL, MyNaverInform.chatbotsecret);
-		//System.out.println("====챗봇 결과====");
+	public String test(String request, String event) {
+		//String result = main(request, MyNaverInform.chatbot_apiURL, MyNaverInform.chatbot_sercet);
+		//System.out.println(" ===챗봇 결과=== ");
 		//System.out.println(result);
 
         String chatbotMessage = "";
 
         try {
-        	String apiURL = MyNaverInform.chatbot_apiURL;
+          	String apiURL = MyNaverInform.chatbot_apiURL;
         	String secretKey = MyNaverInform.chatbotsecret;
-        	
             URL url = new URL(apiURL);
-
-            String message = getReqMessage(request, event); //json형태 질문, (send/open)
+            String message = getReqMessage(request, event);//json형태 질문.(send/open)
             System.out.println("##" + message);
 
             String encodeBase64String = makeSignature(message, secretKey);//암호화
@@ -90,35 +80,33 @@ public class ChatbotServiceImpl implements NaverService {
 
         return chatbotMessage;
     }
-
 	//질문 시크릿키 암호화
-	public static String makeSignature(String message, String secretKey) {
+    public static String makeSignature(String message, String secretKey) {
 
-	    String encodeBase64String = "";
-	
-	    try {
-	        byte[] secrete_key_bytes = secretKey.getBytes("UTF-8");
-	
-	        SecretKeySpec signingKey = new SecretKeySpec(secrete_key_bytes, "HmacSHA256");
-	        Mac mac = Mac.getInstance("HmacSHA256");
-	        mac.init(signingKey);
-	
-	        byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
-	        encodeBase64String = Base64.getEncoder().encodeToString(rawHmac); //안드로이드 -> 자바api java.util 암호화
-	 
-	            return encodeBase64String;
-	
-	        } catch (Exception e){
-	            System.out.println(e);
-	        }
-	
-	        return encodeBase64String;
+        String encodeBase64String = "";
+
+        try {
+            byte[] secrete_key_bytes = secretKey.getBytes("UTF-8");
+
+            SecretKeySpec signingKey = new SecretKeySpec(secrete_key_bytes, "HmacSHA256");
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(signingKey);
+
+            byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
+            encodeBase64String = Base64.getEncoder().encodeToString(rawHmac);//안드로이드 -> java.util api 암호화
+
+            return encodeBase64String;
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
+        return encodeBase64String;
 
     }
 
-
-	//json 형태로 요청값 전달
-	public static String getReqMessage(String voiceMessage, String event) {
+    //json 형태로 요청값 전달
+    public static String getReqMessage(String voiceMessage, String event) {
 
         String requestBody = "";
 
@@ -150,7 +138,7 @@ public class ChatbotServiceImpl implements NaverService {
             bubbles_array.put(bubbles_obj);
 
             obj.put("bubbles", bubbles_array);
-            obj.put("event", event);	//답변 or 웰컴메시지 결정
+            obj.put("event", event);//답변/웰컴메시지 결정
 
             requestBody = obj.toString();
 
@@ -161,5 +149,9 @@ public class ChatbotServiceImpl implements NaverService {
         return requestBody;
 
     }
-
 }
+
+
+
+
+

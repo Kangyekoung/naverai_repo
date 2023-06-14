@@ -13,7 +13,6 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<H3>답변(텍스트):${response }</H3>
-<audio src="/naverimages/${mp3 }" controls ></audio>
+
 </body>
 </html>
